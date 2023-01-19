@@ -1,9 +1,33 @@
 ﻿@page "/cards"
+@inject ICardService CardService
 
 <PageTitle>Cards</PageTitle>
 
 <h3>Cards</h3>
 
-@code {
+<MudSimpleTable>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Deck</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var card in CardService.Cards)
+        {
+            <tr>
+                <td>@card.Title</td>
+                <td>@card.Description</td>
+                <td>@card.Deck.Name</td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
 
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await CardService.GetCards();
+    }
 }
