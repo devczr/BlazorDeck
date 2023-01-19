@@ -1,5 +1,5 @@
 ﻿global using BlazorDeck.Shared;
-
+global using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.AspNetCore.ResponseCompression;
 
