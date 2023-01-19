@@ -6,7 +6,7 @@ namespace BlazorDeck.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CardController : ControllerBase
+public class DealerController : ControllerBase
 {
     public static List<Deck> decks = new List<Deck>
     {
@@ -18,14 +18,14 @@ public class CardController : ControllerBase
 
     public static List<Card> cards = new List<Card>
     {
-        new Card{ 
-            Id = 1, 
+        new Card{
+            Id = 1,
             Title = "Make App",
             Description = "Do something fun with mudblazor",
             Deck = decks[0]
         },
         new Card{
-            Id = 1,
+            Id = 2,
             Title = "Program",
             Description = "Use GitHub, Visual Studio, all the tricks you know, and learn some new tricks!",
             Deck = decks[1]
@@ -43,7 +43,7 @@ public class CardController : ControllerBase
     public async Task<ActionResult<Card>> GetSingleCard(int id)
     {
         var card = cards.FirstOrDefault(c => c.Id == id);
-        if(card == null)
+        if (card == null)
         {
             return NotFound("Sorry, no card found.");
         }

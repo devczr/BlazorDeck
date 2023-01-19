@@ -1,5 +1,6 @@
 ﻿@page "/cards"
 @inject ICardService CardService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Cards</PageTitle>
 
@@ -20,6 +21,9 @@
                 <td>@card.Title</td>
                 <td>@card.Description</td>
                 <td>@card.Deck.Name</td>
+                <td>
+                    <MudIconButton OnClick="(() => ShowCard(card.Id))" Icon="@Icons.Material.Filled.Favorite" Color="Color.Secondary" aria-label="add to favorite"></MudIconButton>
+                </td>
             </tr>
         }
     </tbody>
@@ -29,5 +33,10 @@
     protected override async Task OnInitializedAsync()
     {
         await CardService.GetCards();
+    }
+
+    void ShowCard(int id)
+    {
+        NavigationManager.NavigateTo($"card/{id}");
     }
 }

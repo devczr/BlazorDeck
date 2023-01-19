@@ -1,0 +1,22 @@
+﻿@page "/card"
+@page "/card/{id:int}"
+@inject ICardService CardService
+
+@if (Id == null)
+{
+    <PageTitle>Add a new card to one of your decks</PageTitle>
+    <h3>add details here</h3>
+}
+else
+{
+    <PageTitle>Edit @card.Title</PageTitle>
+    <h3>Edit @card.Title</h3>
+}
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    Card card = new Card { Deck = new Deck() };
+}

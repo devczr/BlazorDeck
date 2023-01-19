@@ -24,7 +24,7 @@ public class CardService : ICardService
     }
     public async Task GetCards()
     {
-        var result = await _http.GetFromJsonAsync<List<Card>>("api/card");
+        var result = await _http.GetFromJsonAsync<List<Card>>("api/dealer");
         if(result != null) 
             Cards = result;
     }
