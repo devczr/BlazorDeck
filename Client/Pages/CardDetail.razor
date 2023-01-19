@@ -13,10 +13,62 @@ else
     <h3>Edit @card.Title</h3>
 }
 
+<EditForm Model="card" OnSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Title" HelperText="Card Title"
+                                  @bind-Value="card.Title" />
+                    <MudTextField Label="Description" HelperText="Card Description"
+                                  @bind-Value="card.Description" />
+                    <MudSelect @bind-Value="card.DeckId" Label="Deck">
+                        @foreach (var deck in CardService.Decks)
+                        {
+                            <MudSelectItem Value="@deck.Id">@deck.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">@submitButtonText</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
 
 @code {
     [Parameter]
     public int? Id { get; set; }
 
+    string deckType = string.Empty;
+    string submitButtonText = string.Empty;
+
     Card card = new Card { Deck = new Deck() };
+
+    protected override async Task OnInitializedAsync()
+    {
+        submitButtonText = Id is null ? "Save New Card" : "Update Card";
+        await CardService.GetCards();
+        await CardService.GetDecks();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id == null)
+        {
+
+        }
+        else
+        {
+            card = await CardService.GetSingleCard((int)Id);
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+
+    }
 }

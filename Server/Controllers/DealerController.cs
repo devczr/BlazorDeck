@@ -22,13 +22,15 @@ public class DealerController : ControllerBase
             Id = 1,
             Title = "Make App",
             Description = "Do something fun with mudblazor",
-            Deck = decks[0]
+            Deck = decks[0],
+            DeckId= 1
         },
         new Card{
             Id = 2,
             Title = "Program",
             Description = "Use GitHub, Visual Studio, all the tricks you know, and learn some new tricks!",
-            Deck = decks[1]
+            Deck = decks[1],
+            DeckId= 2
         }
     };
 
@@ -49,4 +51,11 @@ public class DealerController : ControllerBase
         }
         return Ok(card);
     }
+
+    [HttpGet("decks")]
+    public async Task<ActionResult<Card>> GetDecks()
+    {
+        return Ok(decks);
+    }
+
 }

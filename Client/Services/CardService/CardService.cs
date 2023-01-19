@@ -13,14 +13,19 @@ public class CardService : ICardService
     public List<Card> Cards { get; set; } = new List<Card>();
     public List<Deck> Decks { get; set; } = new List<Deck>();
 
-    public Task GetDeck()
+    public async Task GetDecks()
     {
-        throw new NotImplementedException();
+        var result = await _http.GetFromJsonAsync<List<Deck>>("api/dealer/decks");
+        if (result != null)
+            Decks = result;
     }
 
-    public Task<Card> GetSingleCard(int id)
+    public async Task<Card> GetSingleCard(int id)
     {
-        throw new NotImplementedException();
+        var result = await _http.GetFromJsonAsync<Card>($"api/dealer/{id}");
+        if (result != null)
+            return result;
+        throw new Exception("The dealer lost your card...");
     }
     public async Task GetCards()
     {

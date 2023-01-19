@@ -6,5 +6,5 @@ public interface ICardService
     List<Deck> Decks { get; set; }
     Task GetCards();
     Task<Card> GetSingleCard(int id);
-    Task GetDeck();
+    Task GetDecks();
 }
