@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDeck.Client", "Client\BlazorDeck.Client.csproj", "{9A9229BE-45EA-4426-B054-9B9C73D9EDD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDeck.Client", "Client\BlazorDeck.Client.csproj", "{9A9229BE-45EA-4426-B054-9B9C73D9EDD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDeck.Server", "Server\BlazorDeck.Server.csproj", "{97ECFF30-2F07-4C0A-98EF-B8238960BE25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDeck.Server", "Server\BlazorDeck.Server.csproj", "{97ECFF30-2F07-4C0A-98EF-B8238960BE25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDeck.Shared", "Shared\BlazorDeck.Shared.csproj", "{E6E44E22-18FA-486C-A89B-FBD231820C82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDeck.Shared", "Shared\BlazorDeck.Shared.csproj", "{E6E44E22-18FA-486C-A89B-FBD231820C82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
