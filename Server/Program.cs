@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+﻿global using BlazorDeck.Shared;
+
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
