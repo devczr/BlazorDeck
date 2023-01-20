@@ -1,5 +1,6 @@
 ﻿global using BlazorDeck.Shared;
 global using Microsoft.EntityFrameworkCore;
+global using BlazorDeck.Server.Data;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.AspNetCore.ResponseCompression;
 
@@ -11,6 +12,8 @@ StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configurat
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

@@ -11,7 +11,7 @@ public class DealerController : ControllerBase
     public static List<Deck> decks = new List<Deck>
     {
         new Deck{ Id = 1, Name = "Quest" },
-        new Deck{ Id = 2, Name = "Action" },
+        new Deck{ Id = 2, Name = "World" },
         new Deck{ Id = 3, Name = "Mind" },
         new Deck{ Id = 4, Name = "Heart" },
     };
