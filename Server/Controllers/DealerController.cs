@@ -8,35 +8,16 @@ namespace BlazorDeck.Server.Controllers;
 [ApiController]
 public class DealerController : ControllerBase
 {
-    public static List<Deck> decks = new List<Deck>
+    private readonly DataContext _context;
+    public DealerController(DataContext context)
     {
-        new Deck{ Id = 1, Name = "Quest" },
-        new Deck{ Id = 2, Name = "Action" },
-        new Deck{ Id = 3, Name = "Mind" },
-        new Deck{ Id = 4, Name = "Heart" },
-    };
-
-    public static List<Card> cards = new List<Card>
-    {
-        new Card{
-            Id = 1,
-            Title = "Make App",
-            Description = "Do something fun with mudblazor",
-            Deck = decks[0],
-            DeckId= 1
-        },
-        new Card{
-            Id = 2,
-            Title = "Program",
-            Description = "Use GitHub, Visual Studio, all the tricks you know, and learn some new tricks!",
-            Deck = decks[1],
-            DeckId= 2
-        }
-    };
+        _context = context;
+    }
 
     [HttpGet]
     public async Task<ActionResult<List<Card>>> GetCards()
     {
+        var cards = await _context.Cards.ToListAsync();
         return Ok(cards);
     }
 
@@ -44,7 +25,9 @@ public class DealerController : ControllerBase
     [Route("{id}")]
     public async Task<ActionResult<Card>> GetSingleCard(int id)
     {
-        var card = cards.FirstOrDefault(c => c.Id == id);
+        var card = await _context.Cards
+            .Include(c => c.Deck)
+            .FirstOrDefaultAsync(c => c.Id == id);
         if (card == null)
         {
             return NotFound("Sorry, no card found.");
@@ -53,8 +36,10 @@ public class DealerController : ControllerBase
     }
 
     [HttpGet("decks")]
-    public async Task<ActionResult<Card>> GetDecks()
+    public async Task<ActionResult<Deck>> GetDecks()
     {
+        var decks = await _context.Decks.ToListAsync();
+
         return Ok(decks);
     }
 
