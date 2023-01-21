@@ -7,4 +7,7 @@ public interface ICardService
     Task GetCards();
     Task<Card> GetSingleCard(int id);
     Task GetDecks();
+    Task CreateCard(Card card);
+    Task UpdateCard(Card card);
+    Task DeleteCard(int id);
 }

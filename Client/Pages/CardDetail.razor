@@ -33,6 +33,7 @@ else
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">@submitButtonText</MudButton>
+                    <MudButton ButtonType="ButtonType.Button" Variant="Variant.Outlined" Color="Color.Primary" Class="ml-auto" @onclick="DeleteCard">Delete Card</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -59,7 +60,8 @@ else
     {
         if (Id == null)
         {
-
+            card.Deck = CardService.Decks[0];
+            card.DeckId = card.Deck.Id;
         }
         else
         {
@@ -69,6 +71,19 @@ else
 
     async Task HandleSubmit()
     {
-
+        if (Id == null)
+        {
+            await CardService.CreateCard(card);
+        }
+        else
+        {
+            await CardService.UpdateCard(card);
+        }
     }
+
+    async Task DeleteCard()
+    {
+        await CardService.DeleteCard(card.Id);
+    }
+
 }

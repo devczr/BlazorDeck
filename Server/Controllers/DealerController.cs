@@ -43,4 +43,58 @@ public class DealerController : ControllerBase
         return Ok(decks);
     }
 
+    //Add card
+    [HttpPost]
+    public async Task<ActionResult<List<Card>>> CreateCard(Card card)
+    {
+        card.Deck = null;
+
+        _context.Cards.Add(card);
+        await _context.SaveChangesAsync();
+
+        return Ok(await GetDbCards());
+    }
+
+    //Update card
+    [HttpPut("{id}")]
+    public async Task<ActionResult<List<Card>>> UpdateCard(Card card, int id)
+    {
+        var dbCard = await _context.Cards
+            .Include(card => card.Deck)
+            .FirstOrDefaultAsync(c => c.Id == id);
+        if(dbCard == null)
+            return NotFound("Sorry, card not found");
+
+        dbCard.Title = card.Title;
+        dbCard.Description = card.Description;
+        dbCard.DeckId = card.DeckId;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(await GetDbCards());
+    }
+
+    //Delete Card
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<List<Card>>> DeleteCard(int id)
+    {
+        var dbCard = await _context.Cards
+            .Include(card => card.Deck)
+            .FirstOrDefaultAsync(c => c.Id == id);
+        if (dbCard == null)
+            return NotFound("Sorry, card not found");
+
+        _context.Cards.Remove(dbCard);
+        await _context.SaveChangesAsync();
+
+        return Ok(await GetDbCards());
+    }
+
+
+
+    private async Task<List<Card>> GetDbCards()
+    {
+        return await _context.Cards.Include(c => c.Deck).ToListAsync();
+    }
+
 }
