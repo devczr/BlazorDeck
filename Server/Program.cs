@@ -10,8 +10,19 @@ StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configurat
 
 // Add services to the container.
 
-builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = "server={SERVER};user={USER};password={PASSWORD};database={DATABASE}";
+var serverVersion = ServerVersion.AutoDetect(connectionString);
+
+builder.Services.AddDbContext<DataContext>(dbContextOptions =>
+    dbContextOptions.UseMySql(connectionString, serverVersion)
+    .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors()
+                );
+
+
+
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
