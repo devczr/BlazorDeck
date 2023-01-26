@@ -6,19 +6,18 @@ using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+var connectionString = builder.Configuration["Deck:ConnectionString"]; 
+
+
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
 // Add services to the container.
-
-var connectionString = "server={SERVER};user={USER};password={PASSWORD};database={DATABASE}";
+// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var serverVersion = ServerVersion.AutoDetect(connectionString);
 
 builder.Services.AddDbContext<DataContext>(dbContextOptions =>
-    dbContextOptions.UseMySql(connectionString, serverVersion)
-    .LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors()
-                );
+    dbContextOptions.UseMySql(connectionString, serverVersion));
 
 
 
