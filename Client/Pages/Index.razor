@@ -1,8 +1,40 @@
 ﻿@page "/"
+@inject IJSRuntime js
 
 @inject Microsoft.Extensions.Configuration.IConfiguration config;
 
 <PageTitle>Index</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">How @config["Deck:Config"]!</MudText>
-<MudText Class="mb-8">Welcome welcome</MudText>
+<AuthorizeView>
+    <Authorized>
+        <h1>Hello!  Good to see you, @context.User.Identity.Name </h1>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Hello UNAUTHORIZED USER</h1>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+<AuthorizeView>
+    <Authorized>
+        <MudText Typo="Typo.h3" GutterBottom="true">How @config["Deck:Config"]!</MudText>
+        <br /><br />
+        <MudButton ButtonType="ButtonType.Button" @OnClick="DisplayAlert">Alert</MudButton>
+    </Authorized>
+</AuthorizeView>
+
+
+@code{
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+
+    private async Task DisplayAlert()
+    {
+        var authState = await authenticationState;
+        var message = $"Cascade successful, your role is {authState.User.Identity.Name}";
+        await js.InvokeVoidAsync("alert", message);
+    }
+}
