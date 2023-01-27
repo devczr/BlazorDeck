@@ -17,7 +17,7 @@ var connectionString = builder.Configuration["Deck:ConnectionString"];
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
 // Add services to the container.
-// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 var serverVersion = ServerVersion.AutoDetect(connectionString);
 
 builder.Services.AddDbContext<DataContext>(dbContextOptions =>
@@ -47,7 +47,7 @@ builder.Services.AddAuthentication(o =>
         ValidateAudience = false,
     };
 });
-builder.Services.AddSingleton<UserAccountService>();
+builder.Services.AddTransient<UserAccountService>();
 
 var app = builder.Build();
 

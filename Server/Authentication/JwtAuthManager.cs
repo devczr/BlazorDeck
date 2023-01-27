@@ -24,8 +24,10 @@ public class JwtAuthManager
             return null;
 
 
-        // validate user credentials
-        var userAccount = _userAccountService.GetUserAccount(username);
+        // validate user credentials - TODO check this async for better options
+/*        Task<UserAccount> task = Task.Run<UserAccount>(async () => await _userAccountService.GetSingleUserAccount(username));
+        var userAccount = task.Result;*/
+        var userAccount = _userAccountService.GetSingleUserAccount(username);
         if (userAccount == null || userAccount.Password != password)
             return null;
 

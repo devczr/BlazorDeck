@@ -49,14 +49,12 @@ public class CardService : ICardService
     {
         var result = await _http.PutAsJsonAsync($"api/dealer/{card.Id}", card);
         await SetCards(result);
-
     }
 
     public async Task DeleteCard(int id)
     {
         var result = await _http.DeleteAsync($"api/dealer/{id}");
         await SetCards(result);
-
     }
     private async Task SetCards(HttpResponseMessage result)
     {

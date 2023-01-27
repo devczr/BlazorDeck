@@ -1,27 +1,19 @@
-﻿namespace BlazorDeck.Server.Authentication;
+﻿using BlazorDeck.Shared;
+
+namespace BlazorDeck.Server.Authentication;
 
 public class UserAccountService
 {
-
-
-    private List<UserAccount> _userAccountList;
-
-
-    public UserAccountService()
+    private readonly DataContext _context;
+    public UserAccountService(DataContext context)
     {
-        _userAccountList = new List<UserAccount>
-        {
-            new UserAccount { Username = "admin", Password = "admin", Role = "Administrator" },
-            new UserAccount { Username = "user", Password = "user", Role = "User" },
-        };
+        _context = context;
     }
 
-
-    public UserAccount? GetUserAccount(string username)
+    public UserAccount? GetSingleUserAccount(string username)
     {
-        //TODO: read user data from db
+        return _context.Accounts.FirstOrDefault(x => x.Username == username);
 
-        return _userAccountList.FirstOrDefault(x => x.Username == username);
     }
 
 }

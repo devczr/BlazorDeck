@@ -1,4 +1,6 @@
-﻿namespace BlazorDeck.Server.Data;
+﻿using BlazorDeck.Server.Authentication;
+
+namespace BlazorDeck.Server.Data;
 
 public class DataContext : DbContext
 {
@@ -32,10 +34,13 @@ public class DataContext : DbContext
                     DeckId = 2
                 }
             );
+        modelBuilder.Entity<UserAccount>().HasData(
+            new UserAccount { Id = 1, Username = "Test", Password = "Test", Role = "Administrator" }
+            );
     }
 
     public DbSet<Card> Cards { get; set; }
     public DbSet<Deck> Decks { get; set; }
-
+    public DbSet<UserAccount> Accounts { get; set; }
 }
 
