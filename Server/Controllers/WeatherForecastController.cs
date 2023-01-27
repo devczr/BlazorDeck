@@ -1,4 +1,5 @@
 ﻿using BlazorDeck.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorDeck.Server.Controllers;
@@ -25,6 +26,7 @@ public class WeatherForecastController : ControllerBase
 
 
     [HttpGet]
+    [Authorize(Roles = "Administrator")]
     public IEnumerable<WeatherForecast> Get()
     {
         var rng = new Random();
