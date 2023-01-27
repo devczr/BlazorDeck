@@ -3,6 +3,7 @@ global using Microsoft.EntityFrameworkCore;
 global using BlazorDeck.Server.Data;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.AspNetCore.ResponseCompression;
+using BlazorDeck.Server.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddSingleton<UserAccountService>();
 
 var app = builder.Build();
 

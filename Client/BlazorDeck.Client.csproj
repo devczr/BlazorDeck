@@ -16,4 +16,8 @@
 		<ProjectReference Include="..\Shared\BlazorDeck.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Authentication\" />
+	</ItemGroup>
+
 </Project>
