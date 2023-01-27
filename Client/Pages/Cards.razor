@@ -1,6 +1,7 @@
 ﻿@page "/cards"
 @inject ICardService CardService
 @inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "Administrator")]
 
 <PageTitle>Cards</PageTitle>
 

@@ -11,8 +11,8 @@ public class UserAccountService
     {
         _userAccountList = new List<UserAccount>
         {
-            new UserAccount { Username = "testadmin", Password = "testadmin", Role = "Administrator" },
-            new UserAccount { Username = "testuser", Password = "testuser", Role = "User" }
+            new UserAccount { Username = "admin", Password = "admin", Role = "Administrator" },
+            new UserAccount { Username = "user", Password = "user", Role = "User" },
         };
     }
 

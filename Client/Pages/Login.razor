@@ -1,35 +1,39 @@
 ﻿@page "/login"
 @using BlazorDeck.Client.Authentication;
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
 @inject HttpClient httpClient
 @inject IJSRuntime js
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 
 
-<div class="row">
-    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
-        <div class="mb-3 text-center">
-            <h3>Log In</h3>
-        </div>
-        <div class="mb-3">
-            <label>Username</label>
-            <input @bind="loginRequest.Username" class="form=control" placeholder="Username" />
-        </div>
-        <div class="mb-3">
-            <label>Password</label>
-            <input @bind="loginRequest.Password" class="form=control" placeholder="Password" />
-        </div>
-        <div class="mb-3 d-grid gap-2">
-            <button @onclick="Authenticate" class="btn btn-primary">Log In</button>
-        </div>
-    </div>
-</div>
+
+
+<EditForm Model="loginRequest" OnSubmit="Authenticate">
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Username" HelperText="Username"
+                                  @bind-Value="loginRequest.Username" />
+                    <MudTextField Label="Password" HelperText="Password"
+                                  @bind-Value="loginRequest.Password" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
 
 @code {
 
     private LoginRequest loginRequest = new();
 
-    private async Task Authenticate()
+    async Task Authenticate()
     {
         var loginResponse = await httpClient.PostAsJsonAsync<LoginRequest>("/api/Account/Login", loginRequest);
 

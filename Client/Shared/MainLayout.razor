@@ -10,15 +10,16 @@
 <MudLayout>
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <AuthorizeView>
+        <MudSpacer />
+            <AuthorizeView>
             <NotAuthorized>
-                <MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" Href="/login" Target="_blank">Login</MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" Edge="Edge.End" Href="/login" Target="_self">Login</MudIconButton>
             </NotAuthorized>
             <Authorized>
-                <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Href="javascript:void(0)">Logout</MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" Href="javascript:void(0)" OnClick="Logout">Logout</MudIconButton>
             </Authorized>
         </AuthorizeView>
-            <MudSpacer />
+        <MudSpacer />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>

@@ -7,23 +7,11 @@
 
 <AuthorizeView>
     <Authorized>
-        <h1>Hello!  Good to see you, @context.User.Identity.Name </h1>
+        <h1>Hello! @context.User.Identity.Name !!!!!!!!</h1>
     </Authorized>
     <NotAuthorized>
-        <h1>Hello UNAUTHORIZED USER</h1>
+        <h1>Hello! GUEST !!!</h1>
     </NotAuthorized>
-</AuthorizeView>
-
-
-
-
-
-<AuthorizeView>
-    <Authorized>
-        <MudText Typo="Typo.h3" GutterBottom="true">How @config["Deck:Config"]!</MudText>
-        <br /><br />
-        <MudButton ButtonType="ButtonType.Button" @OnClick="DisplayAlert">Alert</MudButton>
-    </Authorized>
 </AuthorizeView>
 
 
