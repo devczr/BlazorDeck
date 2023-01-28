@@ -11,15 +11,14 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
-            <AuthorizeView>
+        <AuthorizeView>
             <NotAuthorized>
-                <MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" Edge="Edge.End" Href="/login" Target="_self">Login</MudIconButton>
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Login" Color="Color.Secondary" Edge="Edge.End" Href="/login" Target="_self">Login</MudButton>
             </NotAuthorized>
             <Authorized>
-                <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" Href="javascript:void(0)" OnClick="Logout">Logout</MudIconButton>
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Logout" Color="Color.Secondary" Edge="Edge.End" Href="javascript:void(0)" OnClick="Logout">Login</MudButton>
             </Authorized>
         </AuthorizeView>
-        <MudSpacer />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
@@ -28,14 +27,14 @@
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+        <MudContainer MaxWidth="MaxWidth.False" Class="my-5 pt-5">
             @Body
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
 @code {
-    bool _drawerOpen = true;
+    bool _drawerOpen = false;
 
     void DrawerToggle()
     {

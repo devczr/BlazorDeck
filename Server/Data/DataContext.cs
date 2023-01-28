@@ -24,14 +24,16 @@ public class DataContext : DbContext
                     Id = 1,
                     Title = "Make App",
                     Description = "Do something fun with mudblazor",
-                    DeckId = 1
+                    DeckId = 1,
+                    Type = CardType.Quest
                 },
                 new Card
                 {
                     Id = 2,
                     Title = "Program",
                     Description = "Use GitHub, Visual Studio, all the tricks you know, and learn some new tricks!",
-                    DeckId = 2
+                    DeckId = 2,
+                    Type = CardType.Quest
                 }
             );
         modelBuilder.Entity<UserAccount>().HasData(
