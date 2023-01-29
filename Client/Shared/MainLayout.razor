@@ -1,9 +1,10 @@
 ﻿@using BlazorDeck.Client.Authentication;
+@using BlazorDeck.Client.Theme;
 @inherits LayoutComponentBase
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="DeckTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -16,7 +17,7 @@
                 <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Login" Color="Color.Secondary" Edge="Edge.End" Href="/login" Target="_self">Login</MudButton>
             </NotAuthorized>
             <Authorized>
-                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Logout" Color="Color.Secondary" Edge="Edge.End" Href="javascript:void(0)" OnClick="Logout">Login</MudButton>
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Logout" Color="Color.Tertiary" Edge="Edge.End" Href="javascript:void(0)" OnClick="Logout">Logout</MudButton>
             </Authorized>
         </AuthorizeView>
     </MudAppBar>
@@ -34,6 +35,11 @@
 </MudLayout>
 
 @code {
+    DeckTheme DeckTheme = new DeckTheme();
+
+    private bool _isDarkMode = true;
+
+
     bool _drawerOpen = false;
 
     void DrawerToggle()
