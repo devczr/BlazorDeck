@@ -28,7 +28,11 @@
                                 <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddWorldSection())">Add Section</MudButton>
                             </MudMenu>
                         </MudToolBar>
-                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
+                        @if (AddWorldCardButton)
+                        {
+                            <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => ButtonSwap())">Add Card</MudButton>
+                        }
+                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center z-20" />
                     </MudPaper>
                 }
             </MudItem>
@@ -71,7 +75,7 @@
                 <MudContainer Class="d-block align-center justify-center align-content-center mud-width-full pa-2">
                     <MudDropZone T="CardGameItem" Identifier="Hand" CanDrop="@((item) => true)" Class="rounded-lg mud-alert-text-normal pa-4 mt-6 mx-4 flex-grow-1 d-flex flex-wrap" />
                 </MudContainer>
-                </MudItem>
+            </MudItem>
         </MudGrid>
 
 
@@ -85,6 +89,8 @@
     </ItemRenderer>
 </MudDropContainer>
 
+<MudButton OnClick="@ButtonSwap">ChangeButton</MudButton>
+<MudText >Button is:  @AddWorldCardButton.ToString()</MudText>
 
 @code {
 
@@ -92,11 +98,19 @@
 
     private List<CardGameItem> _items = new();
 
+    public bool AddWorldCardButton { get; set; }
+
     /* handling board events */
     protected override async Task OnInitializedAsync()
     {
         await CardService.GetCards();
         PlaceCards();
+        AddWorldCardButton = true;
+    }
+
+    private void ButtonSwap()
+    {
+        AddWorldCardButton = !AddWorldCardButton;
     }
 
     private void TaskUpdated(MudItemDropInfo<CardGameItem> info)
