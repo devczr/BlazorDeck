@@ -16,10 +16,10 @@
     <ChildContent>
         <MudGrid>
 
-            <MudItem xs="12" Class="d-flex">
+            <MudItem xs="12" Class="d-flex justify-center">
                 @foreach (var item in _worldSections)
                 {
-                    <MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
                         <MudToolBar DisableGutters="true">
                             <MudText Typo="Typo.subtitle1"><b>World</b></MudText>
                             <MudSpacer />
@@ -33,16 +33,16 @@
                 }
             </MudItem>
 
-            <MudItem xs="6" Class="d-flex">
-                @foreach (var item in _worldSections)
+            <MudItem xs="6" Class="d-flex justify-center">
+                @foreach (var item in _mindSections)
                 {
-                    <MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
                         <MudToolBar DisableGutters="true">
-                            <MudText Typo="Typo.subtitle1"><b>World</b></MudText>
+                            <MudText Typo="Typo.subtitle1"><b>Mind</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteWorldSection(item))">Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddWorldSection())">Add Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteMindSection(item))">Delete Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddMindSection())">Add Section</MudButton>
                             </MudMenu>
                         </MudToolBar>
                         <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
@@ -50,16 +50,16 @@
                 }
             </MudItem>
 
-            <MudItem xs="6" Class="d-flex">
-                @foreach (var item in _worldSections)
+            <MudItem xs="6" Class="d-flex justify-center">
+                @foreach (var item in _heartSections)
                 {
-                    <MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
                         <MudToolBar DisableGutters="true">
-                            <MudText Typo="Typo.subtitle1"><b>World</b></MudText>
+                            <MudText Typo="Typo.subtitle1"><b>Heart</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteWorldSection(item))">Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddWorldSection())">Add Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteHeartSection(item))">Delete Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddHeartSection())">Add Section</MudButton>
                             </MudMenu>
                         </MudToolBar>
                         <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
@@ -111,6 +111,21 @@
     }
 
     /* Setup for board  */
+    public class CardGameItem
+    {
+        public string Name { get; set; }
+        public string Status { get; set; }
+        public CardType Type { get; set; }
+
+
+        public CardGameItem(string name, CardType type, string status)
+        {
+            Name = name;
+            Type = type;
+            Status = status;
+        }
+    }
+
 
     private List<WorldSection> _worldSections = new()
         {
@@ -124,21 +139,6 @@
         public WorldSection(string name)
         {
             Name = name;
-        }
-    }
-
-    public class CardGameItem
-    {
-        public string Name { get; set; }
-        public string Status { get; set; }
-        public CardType Type { get; set; }
-
-
-        public CardGameItem(string name, CardType type, string status)
-        {
-            Name = name;
-            Type = type;
-            Status = status;
         }
     }
 
@@ -170,4 +170,89 @@
         }
     }
 
+    private List<MindSection> _mindSections = new()
+        {
+            new MindSection("Mind"),
+        };
+
+    public class MindSection
+    {
+        public string Name { get; init; }
+
+        public MindSection(string name)
+        {
+            Name = name;
+        }
+    }
+
+    private void DeleteMindSection(MindSection section)
+    {
+        if (_mindSections.Count <= 1)
+        {
+            return;
+        }
+        else
+        {
+            _mindSections.Remove(section);
+        }
+    }
+
+    private void AddMindSection()
+    {
+        var sectionCount = _mindSections.Count;
+
+        if (sectionCount >= 5)
+        {
+            return;
+        }
+        else
+        {
+            sectionCount += 1;
+            var newSection = new MindSection($"Mind{sectionCount}");
+            _mindSections.Add(newSection);
+        }
+    }
+
+    private List<HeartSection> _heartSections = new()
+        {
+            new HeartSection("Heart"),
+        };
+
+    public class HeartSection
+    {
+        public string Name { get; init; }
+
+        public HeartSection(string name)
+        {
+            Name = name;
+        }
+    }
+
+    private void DeleteHeartSection(HeartSection section)
+    {
+        if (_heartSections.Count <= 1)
+        {
+            return;
+        }
+        else
+        {
+            _heartSections.Remove(section);
+        }
+    }
+
+    private void AddHeartSection()
+    {
+        var sectionCount = _heartSections.Count;
+
+        if (sectionCount >= 5)
+        {
+            return;
+        }
+        else
+        {
+            sectionCount += 1;
+            var newSection = new HeartSection($"Heart{sectionCount}");
+            _heartSections.Add(newSection);
+        }
+    }
 }
