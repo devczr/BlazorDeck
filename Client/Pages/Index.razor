@@ -12,14 +12,14 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudDropContainer T="CardGameItem" @ref="_dropContainer" Items="_items" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-row">
+<MudDropContainer T="CardGameItem" Items="_items" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-row">
     <ChildContent>
         <MudGrid>
 
             <MudItem xs="12" Class="d-flex justify-center">
                 @foreach (var item in _worldSections)
                 {
-                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#D8E2DC">
                         <MudToolBar DisableGutters="true">
                             <MudText Typo="Typo.subtitle1"><b>World</b></MudText>
                             <MudSpacer />
@@ -36,7 +36,7 @@
             <MudItem xs="6" Class="d-flex justify-center">
                 @foreach (var item in _mindSections)
                 {
-                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#FFE5D9">
                         <MudToolBar DisableGutters="true">
                             <MudText Typo="Typo.subtitle1"><b>Mind</b></MudText>
                             <MudSpacer />
@@ -53,7 +53,7 @@
             <MudItem xs="6" Class="d-flex justify-center">
                 @foreach (var item in _heartSections)
                 {
-                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column rounded-lg mud-background-gray" Style="color:#FFCAD4">
                         <MudToolBar DisableGutters="true">
                             <MudText Typo="Typo.subtitle1"><b>Heart</b></MudText>
                             <MudSpacer />
@@ -68,14 +68,16 @@
             </MudItem>
 
             <MudItem xs="12">
-                <MudDropZone T="CardGameItem" Identifier="Hand" CanDrop="@((item) => false)" Class="rounded-lg mud-alert-text-normal pa-4 mt-6 mx-4 flex-grow-1 d-flex flex-wrap" />
-            </MudItem>
+                <MudContainer Class="d-block align-center justify-center align-content-center mud-width-full pa-2">
+                    <MudDropZone T="CardGameItem" Identifier="Hand" CanDrop="@((item) => true)" Class="rounded-lg mud-alert-text-normal pa-4 mt-6 mx-4 flex-grow-1 d-flex flex-wrap" />
+                </MudContainer>
+                </MudItem>
         </MudGrid>
 
 
     </ChildContent>
     <ItemRenderer>
-        <MudPaper Elevation="25" Class="d-flex flex-grow-1 align-center justify-center rounded-lg pa-0 my-0" Outlined="true" Width="132px" Height="228px">
+        <MudPaper Elevation="25" Class="d-flex flex-grow-1 align-center justify-center rounded-lg pa-0 ma-2" Outlined="true" Width="132px" Height="228px">
             <MudContainer>
                 <MudText>@context.Name</MudText>
             </MudContainer>
