@@ -12,320 +12,162 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudDropContainer T="CardGameItem" @ref="_dropContainer" Items="@_tasks" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-row">
+<MudDropContainer T="CardGameItem" @ref="_dropContainer" Items="_items" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-row">
     <ChildContent>
         <MudGrid>
 
             <MudItem xs="12" Class="d-flex">
-                @for (int i = 0; i < _worldSections; i++)
+                @foreach (var item in _worldSections)
                 {
                     <MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
                         <MudToolBar DisableGutters="true">
                             <MudText Typo="Typo.subtitle1"><b>World</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteWorldSection())">Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.AddCard" OnClick="@( () => AddWorldSection())">Add Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteWorldSection(item))">Delete Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddWorldSection())">Add Section</MudButton>
                             </MudMenu>
                         </MudToolBar>
-                        <MudDropZone T="CardGameItem" Identifier="World" Class="mud-height-full" />
+                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
                     </MudPaper>
                 }
             </MudItem>
 
-            <MudItem xs="6" Class="d-flex align-center justify-center mud-width-full">
-                @foreach (var item in _sections)
+            <MudItem xs="6" Class="d-flex">
+                @foreach (var item in _worldSections)
                 {
                     <MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
                         <MudToolBar DisableGutters="true">
-                            <MudText Typo="Typo.subtitle1"><b>@item.Name</b></MudText>
+                            <MudText Typo="Typo.subtitle1"><b>World</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteSection(item))">Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Edit">Rename Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteWorldSection(item))">Delete Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddWorldSection())">Add Section</MudButton>
                             </MudMenu>
                         </MudToolBar>
-                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="mud-height-full" />
-                        @if (item.NewCardOpen)
-                        {
-                            <MudPaper Elevation="25" Class="pa-2 rounded-lg">
-                                <MudTextField @bind-Value="item.NewCardName" Placeholder="New Task" DisableUnderLine="true" Margin="Margin.Dense" Class="mx-2 mt-n2"></MudTextField>
-                                <MudButton OnClick="@(() => AddTask(item))" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Task</MudButton>
-                            </MudPaper>
-                        }
-                        else
-                        {
-                            <MudButton OnClick="@(() => item.NewCardOpen = !item.NewCardOpen)" StartIcon="@Icons.Material.Filled.Add" FullWidth="true" Class="rounded-lg py-2">Add Task</MudButton>
-                        }
+                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
                     </MudPaper>
                 }
-                <MudPaper Class="pa-4" Elevation="0" Width="224px">
-                    @if (_addSectionOpen)
-                    {
-                        <MudPaper Elevation="0" Width="224px" Class="pa-4 d-flex flex-column mud-background-gray rounded-lg">
-                            <EditForm Model="@newSectionModel" OnValidSubmit="OnValidSectionSubmit">
-                                <DataAnnotationsValidator />
-                                <MudTextField @bind-Value="newSectionModel.Name" For="@(() => newSectionModel.Name)" Placeholder="New Section" DisableUnderLine="true"></MudTextField>
-                                <MudButton ButtonType="ButtonType.Submit" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Section</MudButton>
-                            </EditForm>
-                        </MudPaper>
-                    }
-                    else
-                    {
-                        <MudButton OnClick="OpenAddNewSection" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="rounded-lg py-2" FullWidth="true">Add Section</MudButton>
-                    }
-                </MudPaper>
             </MudItem>
-            <MudItem xs="6" Class="d-flex align-center justify-center mud-width-full">
-                @foreach (var item in _sections)
+
+            <MudItem xs="6" Class="d-flex">
+                @foreach (var item in _worldSections)
                 {
                     <MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
                         <MudToolBar DisableGutters="true">
-                            <MudText Typo="Typo.subtitle1"><b>@item.Name</b></MudText>
+                            <MudText Typo="Typo.subtitle1"><b>World</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteSection(item))">Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Edit">Rename Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteWorldSection(item))">Delete Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddWorldSection())">Add Section</MudButton>
                             </MudMenu>
                         </MudToolBar>
-                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="mud-height-full" />
-                        @if (item.NewCardOpen)
-                        {
-                            <MudPaper Elevation="25" Class="pa-2 rounded-lg">
-                                <MudTextField @bind-Value="item.NewCardName" Placeholder="New Task" DisableUnderLine="true" Margin="Margin.Dense" Class="mx-2 mt-n2"></MudTextField>
-                                <MudButton OnClick="@(() => AddTask(item))" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Task</MudButton>
-                            </MudPaper>
-                        }
-                        else
-                        {
-                            <MudButton OnClick="@(() => item.NewCardOpen = !item.NewCardOpen)" StartIcon="@Icons.Material.Filled.Add" FullWidth="true" Class="rounded-lg py-2">Add Task</MudButton>
-                        }
+                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
                     </MudPaper>
                 }
-                <MudPaper Class="pa-4" Elevation="0" Width="224px">
-                    @if (_addSectionOpen)
-                    {
-                        <MudPaper Elevation="0" Width="224px" Class="pa-4 d-flex flex-column mud-background-gray rounded-lg">
-                            <EditForm Model="@newSectionModel" OnValidSubmit="OnValidSectionSubmit">
-                                <DataAnnotationsValidator />
-                                <MudTextField @bind-Value="newSectionModel.Name" For="@(() => newSectionModel.Name)" Placeholder="New Section" DisableUnderLine="true"></MudTextField>
-                                <MudButton ButtonType="ButtonType.Submit" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Section</MudButton>
-                            </EditForm>
-                        </MudPaper>
-                    }
-                    else
-                    {
-                        <MudButton OnClick="OpenAddNewSection" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="rounded-lg py-2" FullWidth="true">Add Section</MudButton>
-                    }
-                </MudPaper>
             </MudItem>
+
             <MudItem xs="12">
+                <MudDropZone T="CardGameItem" Identifier="Hand" CanDrop="@((item) => false)" Class="rounded-lg mud-alert-text-normal pa-4 mt-6 mx-4 flex-grow-1 d-flex flex-wrap" />
             </MudItem>
         </MudGrid>
 
 
     </ChildContent>
     <ItemRenderer>
-        <MudPaper Elevation="25" Class="pa-4 rounded-lg my-3">@context.Name</MudPaper>
-    </ItemRenderer>
-</MudDropContainer>
-
-<MudDropContainer T="DropItem" Items="_items" ItemsSelector="@((item,dropzone) => item.Place == dropzone)" ItemDropped="ItemUpdated">
-    <ChildContent>
-        <MudGrid>
-            <MudItem xs="12" Class="d-flex align-center justify-center mud-width-full">
-                <MudContainer Class="d-block align-center justify-center mud-width-full py-2">
-                    <MudText Typo="Typo.button" Class="ma-2">World</MudText>
-                    <MudDropZone T="DropItem" Identifier="World" Class="rounded-lg mud-alert-text-success pa-0 ma-4 flex-grow-1 align-center justify-center" Style="height:260px; width:180px">
-                    </MudDropZone>
-                </MudContainer>
-            </MudItem>
-            <MudItem xs="6" Class="d-flex align-center justify-center mud-width-full">
-                <MudContainer Class="d-block align-center justify-center mud-width-full py-2">
-                    <MudText Typo="Typo.button" Class="ma-2">Mind</MudText>
-                    <MudDropZone T="DropItem" Identifier="Mind" Class="rounded-lg mud-alert-text-warning pa-0 ma-4 flex-grow-1 align-center justify-center" Style="height:260px; width:180px">
-                    </MudDropZone>
-                </MudContainer>
-            </MudItem>
-            <MudItem xs="6" Class="d-flex align-center justify-center mud-width-full">
-                <MudContainer Class="d-block align-center justify-center align-content-center mud-width-full py-2">
-                    <MudText Typo="Typo.button" Class="ma-2">Heart</MudText>
-                    <MudDropZone T="DropItem" Identifier="Heart" CanDrop="@((item) => (item.Type == CardType.World || item.Type == CardType.Quest))" Class="rounded-lg mud-alert-text-error pa-0 ma-4 flex-grow-1 align-center justify-center" Style="height:260px; width:180px">
-                    </MudDropZone>
-                </MudContainer>
-            </MudItem>
-            <MudItem xs="12">
-                <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
-            </MudItem>
-        </MudGrid>
-
-        <MudDropZone T="DropItem" Identifier="Hand" CanDrop="@((item) => false)" Class="rounded-lg mud-alert-text-normal pa-4 mt-6 mx-4 flex-grow-1 d-flex flex-wrap" />
-    </ChildContent>
-    <ItemRenderer>
-        <MudPaper Elevation="25" Class="pa-0 rounded-lg my-0 align-center justify-center" Outlined="true" Width="132px" Height="228px">
-            <MudContainer >
-                <MudText >@context.Name</MudText>
+        <MudPaper Elevation="25" Class="d-flex flex-grow-1 align-center justify-center rounded-lg pa-0 my-0" Outlined="true" Width="132px" Height="228px">
+            <MudContainer>
+                <MudText>@context.Name</MudText>
             </MudContainer>
         </MudPaper>
     </ItemRenderer>
 </MudDropContainer>
 
-@code {
-    private List<DropItem> _items = new();
 
+@code {
+
+    private MudDropContainer<CardGameItem> _dropContainer;
+
+    private List<CardGameItem> _items = new();
+
+    /* handling board events */
     protected override async Task OnInitializedAsync()
     {
         await CardService.GetCards();
         PlaceCards();
     }
 
-    private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
+    private void TaskUpdated(MudItemDropInfo<CardGameItem> info)
     {
-        dropItem.Item.Place = dropItem.DropzoneIdentifier;
+        info.Item.Status = info.DropzoneIdentifier;
     }
 
     private void PlaceCards()
     {
         foreach (var card in CardService.Cards)
         {
-            _items.Add(new DropItem()
-                {
-                    Name = card.Title,
-                    Type = card.Type,
-                    Place = "Hand"
-                });
+            _items.Add(new CardGameItem(card.Title, card.Type, "Hand"));
         }
-    }
-
-    public class DropItem
-    {
-        public string Name { get; set; }
-        public CardType Type { get; set; }
-        public string Place { get; set; }
-    }
-
-
-    private MudDropContainer<CardGameItem> _dropContainer;
-
-    private bool _addSectionOpen;
-    /* handling board events */
-    private void TaskUpdated(MudItemDropInfo<CardGameItem> info)
-    {
-        info.Item.Status = info.DropzoneIdentifier;
     }
 
     /* Setup for board  */
-    public int _worldSections = 1;
 
-
-    private List<KanBanSections> _sections = new()
+    private List<WorldSection> _worldSections = new()
         {
-            new KanBanSections("To Do", false, String.Empty),
-            new KanBanSections("In Process", false, String.Empty),
-            new KanBanSections("Done", false, String.Empty),
+            new WorldSection("World"),
         };
 
-    public class KanBanSections
+    public class WorldSection
     {
         public string Name { get; init; }
-        public bool NewCardOpen { get; set; }
-        public string NewCardName { get; set; }
 
-        public KanBanSections(string name, bool newCardOpen, string newCardName)
+        public WorldSection(string name)
         {
             Name = name;
-            NewCardOpen = newCardOpen;
-            NewCardName = newCardName;
         }
     }
+
     public class CardGameItem
     {
-        public string Name { get; init; }
+        public string Name { get; set; }
         public string Status { get; set; }
+        public CardType Type { get; set; }
 
-        public CardGameItem(string name, string status)
+
+        public CardGameItem(string name, CardType type, string status)
         {
             Name = name;
+            Type = type;
             Status = status;
         }
     }
 
-    private List<CardGameItem> _tasks = new()
+    private void DeleteWorldSection(WorldSection section)
+    {
+        if (_worldSections.Count <= 1)
         {
-            new CardGameItem("Write unit test", "To Do"),
-            new CardGameItem("Some docu stuff", "To Do"),
-            new CardGameItem("Walking the dog", "To Do"),
-        };
-
-    KanBanNewForm newSectionModel = new KanBanNewForm();
-
-    public class KanBanNewForm
-    {
-        [Required]
-        [StringLength(10, ErrorMessage = "Name length can't be more than 10.")]
-        public string Name { get; set; }
-    }
-
-    private void OnValidSectionSubmit(EditContext context)
-    {
-        _sections.Add(new KanBanSections(newSectionModel.Name, false, String.Empty));
-        newSectionModel.Name = string.Empty;
-        _addSectionOpen = false;
-    }
-
-    private void OpenAddNewSection()
-    {
-        _addSectionOpen = true;
-    }
-
-    private void AddTask(KanBanSections section)
-    {
-        _tasks.Add(new CardGameItem(section.NewCardName, section.Name));
-        section.NewCardName = string.Empty;
-        section.NewCardOpen = false;
-        _dropContainer.Refresh();
-    }
-
-    private void DeleteSection(KanBanSections section)
-    {
-        if (_sections.Count == 1)
-        {
-            _tasks.Clear();
-            _sections.Clear();
-        }
-        else
-        {
-            int newIndex = _sections.IndexOf(section) - 1;
-            if (newIndex < 0)
-            {
-                newIndex = 0;
-            }
-
-            _sections.Remove(section);
-
-            var tasks = _tasks.Where(x => x.Status == section.Name);
-            foreach (var item in tasks)
-            {
-                item.Status = _sections[newIndex].Name;
-            }
-        }
-    }
-
-    private void DeleteWorldSection()
-    {
-        if (_worldSections > 1)
-            _worldSections--;
-        else
             return;
+        }
+        else
+        {
+            _worldSections.Remove(section);
+        }
     }
 
     private void AddWorldSection()
     {
-        if (_worldSections <= 5)
-            _worldSections++;
-        else
-            return;
-    }
+        var sectionCount = _worldSections.Count;
 
+        if (sectionCount >= 5)
+        {
+            return;
+        }
+        else
+        {
+            sectionCount += 1;
+            var newSection = new WorldSection($"World{sectionCount}");
+            _worldSections.Add(newSection);
+        }
+    }
 
 }
