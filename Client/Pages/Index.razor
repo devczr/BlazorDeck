@@ -12,7 +12,7 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudDropContainer T="CardGameItem" Items="_items" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-row">
+<MudDropContainer T="CardGameItem" Items="_items" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="ItemUpdated" Class="d-flex flex-row mt-0 pt-0">
     <ChildContent>
         <MudGrid>
 
@@ -30,9 +30,9 @@
                         </MudToolBar>
                         @if (AddWorldCardButton)
                         {
-                            <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => ButtonSwap())">Add Card</MudButton>
+                            <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => ShowCardSelectPopover())">Add Card</MudButton>
                         }
-                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center z-20" />
+                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
                     </MudPaper>
                 }
             </MudItem>
@@ -89,6 +89,13 @@
     </ItemRenderer>
 </MudDropContainer>
 
+<MudPopover Open="@CardSelectPopover" Fixed="true" Class="px-4 pt-4">
+    <div class="d-flex flex-column">
+        <MudText>Content of the popover can be anything.</MudText>
+        <MudButton OnClick="@CloseCardSelectPopover" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Close</MudButton>
+    </div>
+</MudPopover>
+
 <MudButton OnClick="@ButtonSwap">ChangeButton</MudButton>
 <MudText >Button is:  @AddWorldCardButton.ToString()</MudText>
 
@@ -99,6 +106,7 @@
     private List<CardGameItem> _items = new();
 
     public bool AddWorldCardButton { get; set; }
+    public bool CardSelectPopover { get; set; }
 
     /* handling board events */
     protected override async Task OnInitializedAsync()
@@ -108,12 +116,22 @@
         AddWorldCardButton = true;
     }
 
+    private void ShowCardSelectPopover()
+    {
+        CardSelectPopover = true;
+    }
+
+    private void CloseCardSelectPopover()
+    {
+        CardSelectPopover = false;
+    }
+
     private void ButtonSwap()
     {
         AddWorldCardButton = !AddWorldCardButton;
     }
 
-    private void TaskUpdated(MudItemDropInfo<CardGameItem> info)
+    private void ItemUpdated(MudItemDropInfo<CardGameItem> info)
     {
         info.Item.Status = info.DropzoneIdentifier;
     }
