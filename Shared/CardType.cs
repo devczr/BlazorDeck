@@ -12,3 +12,11 @@ public enum CardType
     Object,
     Skill
 }
+
+
+public enum SlotType
+{
+    World,
+    Mind,
+    Heart
+}
