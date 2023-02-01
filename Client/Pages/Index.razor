@@ -24,8 +24,8 @@
                             <MudText Typo="Typo.subtitle1"><b>@item.Guid.ToString()</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" >Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddWorldSection())">Add Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteCardSlot(item))">Delete Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddCardSlot(SlotType.World))">Add Section</MudButton>
                             </MudMenu>
                         </MudToolBar>
                         @if (AddWorldCardButton)
@@ -165,15 +165,6 @@
         }
     }
 
-
-
-
-
-
-
-
-
-
     private List<CardSlot> _cardSlots = new()
     {
         new CardSlot(SlotType.World),
@@ -195,6 +186,53 @@
         }
     }
 
+    private void DeleteCardSlot(CardSlot cardSlot)
+    {
+        var slotCount = (_cardSlots.Where(c => c.SlotType == cardSlot.SlotType).Count());
+
+        if (slotCount <= 1)
+        {
+            //TODO: display popup warning user at least one slot is required
+            return;
+        }
+        else
+        {
+            _cardSlots.Remove(cardSlot);
+        }
+    }
+
+    private void AddCardSlot(SlotType slotType)
+    {
+        var slotCount = (_cardSlots.Where(c => c.SlotType == slotType).Count());
+
+        if (slotCount >= 3)
+        {
+            //TODO: display popup warning user the max of this slot type has been reached
+            return;
+        }
+        else
+        {
+            _cardSlots.Add(new CardSlot(slotType));
+        }
+    }
+
+
+
+    private void AddWorldSection()
+    {
+        var sectionCount = _worldSections.Count;
+
+        if (sectionCount >= 5)
+        {
+            return;
+        }
+        else
+        {
+            sectionCount += 1;
+            var newSection = new WorldSection($"World{sectionCount}");
+            _worldSections.Add(newSection);
+        }
+    }
 
 
 
@@ -229,21 +267,6 @@
         }
     }
 
-    private void AddWorldSection()
-    {
-        var sectionCount = _worldSections.Count;
-
-        if (sectionCount >= 5)
-        {
-            return;
-        }
-        else
-        {
-            sectionCount += 1;
-            var newSection = new WorldSection($"World{sectionCount}");
-            _worldSections.Add(newSection);
-        }
-    }
 
     private List<MindSection> _mindSections = new()
         {
