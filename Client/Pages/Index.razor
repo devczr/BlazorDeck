@@ -14,7 +14,7 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudDropContainer T="Card" Items="_cards" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="CardUpdated" Class="d-flex flex-row mt-0 pt-0">
+<MudDropContainer T="Card" Items="_cards" @ref="_dropContainer" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="CardUpdated" Class="d-flex flex-row mt-0 pt-0">
     <ChildContent>
         <MudGrid>
 
@@ -248,6 +248,7 @@
             //TODO: display popup warning user at least one slot is required
             ReturnToHand(cardSlot);
             cardSlot.IsOccupied = false;
+            RefreshContainer();
             return;
         }
         else
@@ -260,7 +261,7 @@
     private void AddCardSlot(SlotType slotType)
     {
         //var slotCount = (_cardSlots.Where(c => c.SlotType == slotType).Count());
-  
+
         //        if (slotCount >= 3)
         //        {
         //            //TODO: display popup warning user the max of this slot type has been reached
@@ -270,8 +271,8 @@
         //        {
         //            _cardSlots.Add(new CardSlot(slotType));
         //        }
-     
-        
+
+
         _cardSlots.Add(new CardSlot(slotType));
     }
 
@@ -285,5 +286,13 @@
             return;
 
         card.Status = "Hand";
+        _dropContainer?.Refresh();
+
     }
+
+    private void RefreshContainer()
+    {
+        _dropContainer?.Refresh();
+    }
+
 }
