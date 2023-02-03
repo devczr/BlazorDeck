@@ -25,7 +25,8 @@ public class DataContext : DbContext
                     Title = "Make App",
                     Description = "Do something fun with mudblazor",
                     DeckId = 1,
-                    Type = CardType.Quest
+                    Type = CardType.Quest,
+                    Guid = Guid.NewGuid(),
                 },
                 new Card
                 {
@@ -33,7 +34,8 @@ public class DataContext : DbContext
                     Title = "Program",
                     Description = "Use GitHub, Visual Studio, all the tricks you know, and learn some new tricks!",
                     DeckId = 2,
-                    Type = CardType.Quest
+                    Type = CardType.Quest,
+                    Guid = Guid.NewGuid(),
                 }
             );
         modelBuilder.Entity<UserAccount>().HasData(

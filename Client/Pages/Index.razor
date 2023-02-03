@@ -9,10 +9,12 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 @inject Microsoft.Extensions.Configuration.IConfiguration config;
+@inject ISnackbar Snackbar
+
 
 <PageTitle>Home</PageTitle>
 
-<MudDropContainer T="CardGameItem" Items="_items" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="ItemUpdated" Class="d-flex flex-row mt-0 pt-0">
+<MudDropContainer T="Card" Items="_cards" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="CardUpdated" Class="d-flex flex-row mt-0 pt-0">
     <ChildContent>
         <MudGrid>
 
@@ -21,18 +23,18 @@
                 {
                     <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#D8E2DC">
                         <MudToolBar DisableGutters="true">
-                            <MudText Typo="Typo.subtitle1"><b>@item.Guid.ToString()</b></MudText>
+                            <MudText Typo="Typo.subtitle1"><b>World</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteCardSlot(item))">Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddCardSlot(SlotType.World))">Add Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteCardSlot(item))">Delete Slot</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddCardSlot(SlotType.World))">Add Slot</MudButton>
                             </MudMenu>
                         </MudToolBar>
                         @if (AddWorldCardButton)
                         {
                             <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => ShowCardSelectPopover())" Class="d-flex align-center justify-center">Add Card</MudButton>
                         }
-                        <MudDropZone T="CardGameItem" Identifier="World" Class="d-flex mud-height-full align-center justify-center" />
+                        <MudDropZone T="Card" Identifier="@item.Guid.ToString()" Class="d-flex mud-height-full align-center justify-center" />
                     </MudPaper>
                 }
                 <MudPopover Open="@CardSelectPopover" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="px-4 pt-4">
@@ -44,42 +46,62 @@
             </MudItem>
 
             <MudItem xs="6" Class="d-flex justify-center">
-                @foreach (var item in _mindSections)
+                @foreach (var item in _cardSlots.Where(c => c.SlotType == SlotType.Mind))
                 {
-                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#FFE5D9">
+                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#D8E2DC">
                         <MudToolBar DisableGutters="true">
                             <MudText Typo="Typo.subtitle1"><b>Mind</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteMindSection(item))">Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddMindSection())">Add Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteCardSlot(item))">Delete Slot</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddCardSlot(SlotType.Mind))">Add Slot</MudButton>
                             </MudMenu>
                         </MudToolBar>
-                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
+                        @if (AddWorldCardButton)
+                        {
+                            <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => ShowCardSelectPopover())" Class="d-flex align-center justify-center">Add Card</MudButton>
+                        }
+                        <MudDropZone T="Card" Identifier="@item.Guid.ToString()" Class="d-flex mud-height-full align-center justify-center" />
                     </MudPaper>
                 }
+                <MudPopover Open="@CardSelectPopover" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="px-4 pt-4">
+                    <div class="d-flex flex-column">
+                        <MudText>Content of the popover can be anything.</MudText>
+                        <MudButton OnClick="@CloseCardSelectPopover" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Close</MudButton>
+                    </div>
+                </MudPopover>
             </MudItem>
 
             <MudItem xs="6" Class="d-flex justify-center">
-                @foreach (var item in _heartSections)
+                @foreach (var item in _cardSlots.Where(c => c.SlotType == SlotType.Heart))
                 {
-                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column rounded-lg mud-background-gray" Style="color:#FFCAD4">
+                    <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#D8E2DC">
                         <MudToolBar DisableGutters="true">
                             <MudText Typo="Typo.subtitle1"><b>Heart</b></MudText>
                             <MudSpacer />
                             <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteHeartSection(item))">Delete Section</MudButton>
-                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddHeartSection())">Add Section</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteCardSlot(item))">Delete Slot</MudButton>
+                                <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => AddCardSlot(SlotType.Heart))">Add Slot</MudButton>
                             </MudMenu>
                         </MudToolBar>
-                        <MudDropZone T="CardGameItem" Identifier="@item.Name" Class="d-flex mud-height-full align-center justify-center" />
+                        @if (AddWorldCardButton)
+                        {
+                            <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Add" OnClick="@( () => ShowCardSelectPopover())" Class="d-flex align-center justify-center">Add Card</MudButton>
+                        }
+                        <MudDropZone T="Card" Identifier="@item.Guid.ToString()" Class="d-flex mud-height-full align-center justify-center" />
                     </MudPaper>
                 }
+                <MudPopover Open="@CardSelectPopover" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="px-4 pt-4">
+                    <div class="d-flex flex-column">
+                        <MudText>Content of the popover can be anything.</MudText>
+                        <MudButton OnClick="@CloseCardSelectPopover" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Close</MudButton>
+                    </div>
+                </MudPopover>
             </MudItem>
 
             <MudItem xs="12">
                 <MudContainer Class="d-block align-center justify-center align-content-center mud-width-full pa-2">
-                    <MudDropZone T="CardGameItem" Identifier="Hand" CanDrop="@((item) => true)" Class="rounded-lg mud-alert-text-normal pa-4 mt-6 mx-4 flex-grow-1 d-flex flex-wrap" />
+                    <MudDropZone T="Card" Identifier="Hand" CanDrop="@((item) => true)" Class="rounded-lg mud-alert-text-normal pa-4 mt-6 mx-4 flex-grow-1 d-flex flex-wrap" />
                 </MudContainer>
             </MudItem>
         </MudGrid>
@@ -89,7 +111,7 @@
     <ItemRenderer>
         <MudPaper Elevation="25" Class="d-flex flex-grow-1 align-center justify-center rounded-lg pa-0 ma-2" Outlined="true" Width="132px" Height="228px">
             <MudContainer>
-                <MudText>@context.Name</MudText>
+                <MudText>@context.Title</MudText>
             </MudContainer>
         </MudPaper>
     </ItemRenderer>
@@ -102,10 +124,9 @@
 
 @code {
 
-    private MudDropContainer<CardGameItem> _dropContainer;
+    private MudDropContainer<Card> _dropContainer;
 
-    private List<CardGameItem> _items = new();
-
+    private List<Card> _cards = new();
 
     /* popover */
     public bool AddWorldCardButton { get; set; }
@@ -121,6 +142,24 @@
         AddWorldCardButton = true;
     }
 
+    private void PlaceCards()
+    {
+        foreach (var card in CardService.Cards)
+        {
+            if(string.IsNullOrEmpty(card.Status))
+                card.Status = "Hand";
+
+            _cards.Add(card);
+        }
+    }
+
+    private void CardUpdated(MudItemDropInfo<Card> info)
+    {
+        info.Item.Status = info.DropzoneIdentifier;
+    }
+
+
+    /*Card Popover events*/
     private void ShowCardSelectPopover()
     {
         CardSelectPopover = true;
@@ -136,34 +175,6 @@
         AddWorldCardButton = !AddWorldCardButton;
     }
 
-    private void ItemUpdated(MudItemDropInfo<CardGameItem> info)
-    {
-        info.Item.Status = info.DropzoneIdentifier;
-    }
-
-    private void PlaceCards()
-    {
-        foreach (var card in CardService.Cards)
-        {
-            _items.Add(new CardGameItem(card.Title, card.Type, "Hand"));
-        }
-    }
-
-    /* Setup for board  */
-    public class CardGameItem
-    {
-        public string Name { get; set; }
-        public string Status { get; set; }
-        public CardType Type { get; set; }
-
-
-        public CardGameItem(string name, CardType type, string status)
-        {
-            Name = name;
-            Type = type;
-            Status = status;
-        }
-    }
 
     private List<CardSlot> _cardSlots = new()
     {
@@ -197,6 +208,7 @@
         }
         else
         {
+            ReturnToHand(cardSlot);
             _cardSlots.Remove(cardSlot);
         }
     }
@@ -217,140 +229,14 @@
     }
 
 
-
-    private void AddWorldSection()
+    private void ReturnToHand(CardSlot cardSlot)
     {
-        var sectionCount = _worldSections.Count;
-
-        if (sectionCount >= 5)
-        {
+        var card = (from c in _cards
+                    where c.Status == cardSlot.Guid.ToString()
+                    select c).SingleOrDefault();
+        if (card is null)
             return;
-        }
-        else
-        {
-            sectionCount += 1;
-            var newSection = new WorldSection($"World{sectionCount}");
-            _worldSections.Add(newSection);
-        }
-    }
 
-
-
-
-
-    private List<WorldSection> _worldSections = new()
-        {
-            new WorldSection("World"),
-        };
-
-    public class WorldSection
-    {
-        public string Name { get; init; }
-        public bool IsEmpty { get; set; }
-
-        public WorldSection(string name)
-        {
-            Name = name;
-            IsEmpty = true;
-        }
-    }
-
-    private void DeleteWorldSection(WorldSection section)
-    {
-        if (_worldSections.Count <= 1)
-        {
-            return;
-        }
-        else
-        {
-            _worldSections.Remove(section);
-        }
-    }
-
-
-    private List<MindSection> _mindSections = new()
-        {
-            new MindSection("Mind"),
-        };
-
-    public class MindSection
-    {
-        public string Name { get; init; }
-
-        public MindSection(string name)
-        {
-            Name = name;
-        }
-    }
-
-    private void DeleteMindSection(MindSection section)
-    {
-        if (_mindSections.Count <= 1)
-        {
-            return;
-        }
-        else
-        {
-            _mindSections.Remove(section);
-        }
-    }
-
-    private void AddMindSection()
-    {
-        var sectionCount = _mindSections.Count;
-
-        if (sectionCount >= 5)
-        {
-            return;
-        }
-        else
-        {
-            sectionCount += 1;
-            var newSection = new MindSection($"Mind{sectionCount}");
-            _mindSections.Add(newSection);
-        }
-    }
-
-    private List<HeartSection> _heartSections = new()
-        {
-            new HeartSection("Heart"),
-        };
-
-    public class HeartSection
-    {
-        public string Name { get; init; }
-
-        public HeartSection(string name)
-        {
-            Name = name;
-        }
-    }
-
-    private void DeleteHeartSection(HeartSection section)
-    {
-        if (_heartSections.Count <= 1)
-        {
-            return;
-        }
-        else
-        {
-            _heartSections.Remove(section);
-        }
-    }
-
-    private void AddHeartSection()
-    {
-        var sectionCount = _heartSections.Count;
-
-        if (sectionCount >= 5)
-        {
-            return;
-        }
-        else
-        {
-            sectionCount += 1;
-            var newSection = new HeartSection($"Heart{sectionCount}");
-            _heartSections.Add(newSection);
-        }
+        card.Status = "Hand";
     }
 }

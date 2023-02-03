@@ -48,7 +48,7 @@ public class DealerController : ControllerBase
     public async Task<ActionResult<List<Card>>> CreateCard(Card card)
     {
         card.Deck = null;
-
+        card.Guid = Guid.NewGuid();
         _context.Cards.Add(card);
         await _context.SaveChangesAsync();
 
@@ -62,7 +62,7 @@ public class DealerController : ControllerBase
         var dbCard = await _context.Cards
             .Include(card => card.Deck)
             .FirstOrDefaultAsync(c => c.Id == id);
-        if(dbCard == null)
+        if (dbCard == null)
             return NotFound("Sorry, card not found");
 
         dbCard.Title = card.Title;

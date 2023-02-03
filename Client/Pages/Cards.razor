@@ -12,6 +12,7 @@
         <tr>
             <th>Title</th>
             <th>Description</th>
+            <th>Guid</th>
             <th>Deck</th>
         </tr>
     </thead>
@@ -21,6 +22,7 @@
             <tr>
                 <td>@card.Title</td>
                 <td>@card.Description</td>
+                <td>@card.Guid</td>
                 <td>
                     <MudIconButton OnClick="(() => ShowCard(card.Id))" Icon="@Icons.Material.Filled.Favorite" Color="Color.Secondary" aria-label="add to favorite"></MudIconButton>
                 </td>
@@ -47,5 +49,6 @@
     {
         NavigationManager.NavigateTo("/card");
     }
+
 
 }

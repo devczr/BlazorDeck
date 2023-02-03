@@ -3,6 +3,7 @@ using System;
 using BlazorDeck.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorDeck.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230201202145_AddsGuid")]
+    partial class AddsGuid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,10 +70,6 @@ namespace BlazorDeck.Server.Migrations
                     b.Property<Guid>("Guid")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -90,8 +89,7 @@ namespace BlazorDeck.Server.Migrations
                             Id = 1,
                             DeckId = 1,
                             Description = "Do something fun with mudblazor",
-                            Guid = new Guid("4c855461-0fd9-4d8b-8491-f80d57ce1185"),
-                            Status = "",
+                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Title = "Make App",
                             Type = 3
                         },
@@ -100,8 +98,7 @@ namespace BlazorDeck.Server.Migrations
                             Id = 2,
                             DeckId = 2,
                             Description = "Use GitHub, Visual Studio, all the tricks you know, and learn some new tricks!",
-                            Guid = new Guid("743dc82e-ecd4-4a52-a0ab-ce7de91bd1f0"),
-                            Status = "",
+                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Title = "Program",
                             Type = 3
                         });
