@@ -18,7 +18,7 @@
     <ChildContent>
         <MudGrid>
 
-            <MudItem xs="12" Class="d-flex justify-center">
+            <MudItem xs="4" Class="d-flex justify-center">
                 @foreach (var item in _cardSlots.Where( c => c.SlotType == SlotType.World))
                 {
                     <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#D8E2DC">
@@ -45,7 +45,7 @@
                 </MudPopover>
             </MudItem>
 
-            <MudItem xs="6" Class="d-flex justify-center">
+            <MudItem xs="4" Class="d-flex justify-center">
                 @foreach (var item in _cardSlots.Where(c => c.SlotType == SlotType.Mind))
                 {
                     <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#D8E2DC">
@@ -72,7 +72,7 @@
                 </MudPopover>
             </MudItem>
 
-            <MudItem xs="6" Class="d-flex justify-center">
+            <MudItem xs="4" Class="d-flex justify-center">
                 @foreach (var item in _cardSlots.Where(c => c.SlotType == SlotType.Heart))
                 {
                     <MudPaper Elevation="0" Width="160px" MinHeight="260px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg" Style="color:#D8E2DC">
@@ -154,14 +154,6 @@
             _cards.Add(card);
         }
     }
-
-
-
-
-
-
-
-
 
     private void CardUpdated(MudItemDropInfo<Card> info)
     {
